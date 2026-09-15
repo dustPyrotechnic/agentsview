@@ -190,8 +190,8 @@ struct ModelUsageData: Identifiable, Sendable {
             let percentage = totalCost > 0 ? Double(model.cost.microdollars) / Double(totalCost) : 0.0
             
             return ModelUsageData(
-                id: model.modelName,
-                modelName: model.modelName,
+                id: model.model,
+                modelName: model.model,
                 cost: model.cost,
                 tokenCount: tokenCount,
                 percentage: percentage

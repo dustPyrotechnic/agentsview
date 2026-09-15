@@ -22,13 +22,7 @@ public struct UsageSummaryResponse: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case schemaVersion = "schema_version"
         case pricing, projects, from, to, totals, daily
-        case projectTotals = "project_totals"
-        case modelTotals = "model_totals"
-        case agentTotals = "agent_totals"
-        case sessionCounts = "session_counts"
-        case cacheStats = "cache_stats"
-        case unsupportedUsage = "unsupported_usage"
-        case comparison
+        case projectTotals, modelTotals, agentTotals, sessionCounts, cacheStats, unsupportedUsage, comparison
     }
 }
 
@@ -40,7 +34,7 @@ public struct UsageTotals: Codable, Sendable {
     let cacheCreationTokens: Int
     let cacheReadTokens: Int
     let totalCost: Money
-    let copilotAICredits: Double
+    let copilotAICredits: Double?
     let cacheSavings: Money
     
     enum CodingKeys: String, CodingKey {
@@ -88,8 +82,7 @@ public struct ProjectBreakdown: Codable, Sendable {
     
     enum CodingKeys: String, CodingKey {
         case projectKey = "project_key"
-        case project, inputTokens, outputTokens
-        case cacheCreationTokens, cacheReadTokens, cost
+        case project, inputTokens, outputTokens, cacheCreationTokens, cacheReadTokens, cost
     }
 }
 
@@ -114,7 +107,7 @@ public struct MachineBreakdown: Codable, Sendable {
 // MARK: - Totals
 
 public struct ModelTotal: Codable, Sendable {
-    let modelName: String
+    let model: String
     let inputTokens: Int
     let outputTokens: Int
     let cacheCreationTokens: Int
@@ -133,8 +126,7 @@ public struct ProjectTotal: Codable, Sendable {
     
     enum CodingKeys: String, CodingKey {
         case projectKey = "project_key"
-        case project, inputTokens, outputTokens
-        case cacheCreationTokens, cacheReadTokens, cost
+        case project, inputTokens, outputTokens, cacheCreationTokens, cacheReadTokens, cost
     }
 }
 
@@ -150,29 +142,18 @@ public struct AgentTotal: Codable, Sendable {
 // MARK: - Stats
 
 public struct UsageSessionCounts: Codable, Sendable {
-    let totalSessions: Int
-    let humanSessions: Int
-    let automatedSessions: Int
-    
-    enum CodingKeys: String, CodingKey {
-        case totalSessions = "total_sessions"
-        case humanSessions = "human_sessions"
-        case automatedSessions = "automated_sessions"
-    }
+    let total: Int
+    let byProject: [String: Int]
+    let byAgent: [String: Int]
 }
 
 public struct CacheStats: Codable, Sendable {
-    let cacheHitRate: Double
-    let cacheHits: Int
-    let cacheMisses: Int
-    let totalRequests: Int
-    
-    enum CodingKeys: String, CodingKey {
-        case cacheHitRate = "cache_hit_rate"
-        case cacheHits = "cache_hits"
-        case cacheMisses = "cache_misses"
-        case totalRequests = "total_requests"
-    }
+    let cacheReadTokens: Int
+    let cacheCreationTokens: Int
+    let uncachedInputTokens: Int
+    let outputTokens: Int
+    let hitRate: Double
+    let savingsVsUncached: Money
 }
 
 public struct Comparison: Codable, Sendable {
@@ -180,13 +161,6 @@ public struct Comparison: Codable, Sendable {
     let priorTo: String
     let priorTotalCost: Money
     let deltaPct: Double
-    
-    enum CodingKeys: String, CodingKey {
-        case priorFrom = "prior_from"
-        case priorTo = "prior_to"
-        case priorTotalCost = "prior_total_cost"
-        case deltaPct = "delta_pct"
-    }
 }
 
 // MARK: - Supporting Types
@@ -195,14 +169,8 @@ public struct PricingBlock: Codable, Sendable {
     // Placeholder - not used in current implementation
 }
 
-public struct ProjectMapEntry: Codable, Sendable {
-    let displayName: String
-    
-    enum CodingKeys: String, CodingKey {
-        case displayName = "display_name"
-    }
-}
+public struct ProjectMapEntry: Codable, Sendable {}
 
 public struct UnsupportedUsage: Codable, Sendable {
-    let message: String
+    let kind: String
 }

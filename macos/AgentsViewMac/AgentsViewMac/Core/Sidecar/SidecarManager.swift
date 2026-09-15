@@ -27,7 +27,7 @@ final class SidecarManager {
     private let executable: URL?
     private let pollInterval: Duration
     private let startupTimeout: Duration
-    private let healthURL = URL(string: "http://127.0.0.1:8080/health")!
+    private let healthURL = URL(string: "http://127.0.0.1:8080/api/ping")!
     private(set) var state: SidecarState = .stopped
 
     init(processManager: ProcessManaging = SystemProcessManager(), healthProbe: HealthProbing = HTTPHealthProbe(), executable: URL? = nil, pollInterval: Duration = .milliseconds(200), startupTimeout: Duration = .seconds(10)) {
@@ -36,7 +36,7 @@ final class SidecarManager {
     func start() async throws {
         guard state != .running else { return }; state = .starting
         guard let executable = executable ?? executableURL() else { state = .failed(.executableNotFound); throw SidecarError.executableNotFound }
-        do { try processManager.start(executable: executable, arguments: ["serve", "--background", "--host", "127.0.0.1"]) } catch { let failure = SidecarError.startupFailed(error.localizedDescription); state = .failed(failure); throw failure }
+        do { try processManager.start(executable: executable, arguments: ["serve", "--host", "127.0.0.1", "--port", "8080", "--no-sync"]) } catch { let failure = SidecarError.startupFailed(error.localizedDescription); state = .failed(failure); throw failure }
         let deadline = ContinuousClock.now + startupTimeout
         while ContinuousClock.now < deadline {
             if await healthProbe.isHealthy(at: healthURL) { state = .running; return }
@@ -47,6 +47,10 @@ final class SidecarManager {
     func stop() async {
         guard processManager.isRunning else { state = .stopped; return }; processManager.terminate(force: false)
         if processManager.isRunning { try? await Task.sleep(for: .milliseconds(100)); if processManager.isRunning { processManager.terminate(force: true) } }; state = .stopped
+    }
+    func stopImmediately() {
+        if processManager.isRunning { processManager.terminate(force: true) }
+        state = .stopped
     }
     private func executableURL() -> URL? {
         if let path = ProcessInfo.processInfo.environment["AGENTSVIEW_SIDECAR_PATH"], !path.isEmpty { return URL(fileURLWithPath: path) }

@@ -150,6 +150,6 @@ final class DashboardModel {
                totals.cacheCreationTokens == 0 &&
                totals.cacheReadTokens == 0 &&
                totals.totalCost.microdollars == 0 &&
-               totals.copilotAICredits == 0
+               (totals.copilotAICredits ?? 0) == 0
     }
 }

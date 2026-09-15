@@ -2,6 +2,7 @@ import SwiftUI
 
 struct DashboardView: View {
     let model: DashboardModel
+    let sidecar: SidecarManager
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
@@ -17,7 +18,14 @@ struct DashboardView: View {
         }
         .frame(minWidth: 700, minHeight: 500)
         .padding(24)
-        .task { await model.refresh() }
+        .task {
+            do {
+                try await sidecar.start()
+            } catch {
+                // Refresh presents the actionable backend error in the view.
+            }
+            await model.refresh()
+        }
     }
 
     @ViewBuilder private func dashboard(_ summary: UsageSummaryResponse) -> some View {
@@ -34,7 +42,7 @@ struct DashboardView: View {
                 summaryCards(summary)
                 HStack(alignment: .top, spacing: 16) {
                     chartCard(summary)
-                    rankingCard(title: "Top models", icon: "cpu", rows: summary.modelTotals.map { ($0.modelName, $0.cost.microdollars, $0.inputTokens + $0.outputTokens) })
+                    rankingCard(title: "Top models", icon: "cpu", rows: summary.modelTotals.map { ($0.model, $0.cost.microdollars, $0.inputTokens + $0.outputTokens) })
                 }
                 rankingCard(title: "Top projects", icon: "folder", rows: summary.projectTotals.map { ($0.project, $0.cost.microdollars, $0.inputTokens + $0.outputTokens) })
                 if summary.unsupportedUsage != nil { Label("Some usage is unpriced", systemImage: "questionmark.circle").foregroundStyle(.orange) }
@@ -46,7 +54,7 @@ struct DashboardView: View {
         return HStack(spacing: 12) {
             metric("Tokens", value: tokens.formatted())
             metric("Actual cost", value: formatMicrodollars(summary.totals.totalCost.microdollars))
-            metric("Sessions", value: summary.sessionCounts.totalSessions.formatted())
+            metric("Sessions", value: summary.sessionCounts.total.formatted())
             if let comparison = summary.comparison { metric("vs prior", value: formatComparison(comparison.deltaPct)) }
         }
     }
