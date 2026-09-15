@@ -21,6 +21,7 @@
 | Any frontend file                                                             | `frontend/AGENTS.md`                 |
 | Frontend controls, styling, or reusable components                            | `frontend/AGENTS.md` and `DESIGN.md` |
 
+在需要理解模块职责、入口、数据流或修改边界时，先读取 [`docs/agents/README.md`](docs/agents/README.md)，再按其中路由读取对应 `module-*.md`；只加载当前任务涉及的模块记忆，深入资料由模块记忆中的指针触发。
 The `README.md` and `Makefile` are the sources for project facts, setup, and
 commands. Do not copy their catalogues into this file.
 
