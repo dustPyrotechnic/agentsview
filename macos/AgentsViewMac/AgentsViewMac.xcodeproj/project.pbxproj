@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+        AA0000010000000000000001 /* AgentsViewMacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000020000000000000001 /* AgentsViewMacApp.swift */; };
 		C10000000000000000000001 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000001 /* APIClient.swift */; };
 		C10000000000000000000002 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000002 /* APIError.swift */; };
 		C10000000000000000000003 /* UsageModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000003 /* UsageModels.swift */; };
@@ -16,6 +17,7 @@
 		C10000000000000000000007 /* DashboardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000007 /* DashboardModel.swift */; };
 		C10000000000000000000008 /* ChartModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000008 /* ChartModels.swift */; };
 		C10000000000000000000009 /* MenuBarExtraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000009 /* MenuBarExtraView.swift */; };
+        C10000000000000000000010 /* Money.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000010 /* Money.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,7 @@
 		B10000000000000000000007 /* DashboardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardModel.swift; sourceTree = "<group>"; };
 		B10000000000000000000008 /* ChartModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartModels.swift; sourceTree = "<group>"; };
 		B10000000000000000000009 /* MenuBarExtraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarExtraView.swift; sourceTree = "<group>"; };
+        B10000000000000000000010 /* Money.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Money.swift; sourceTree = "<group>"; };
 		AA0000020000000000000001 /* AgentsViewMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentsViewMacApp.swift; sourceTree = "<group>"; };
 		AA0000030000000000000001 /* AgentsViewMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AgentsViewMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA0000040000000000000001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -94,6 +97,7 @@
                 B10000000000000000000001 /* APIClient.swift */,
                 B10000000000000000000002 /* APIError.swift */,
                 B10000000000000000000003 /* UsageModels.swift */,
+                B10000000000000000000010 /* Money.swift */,
             );
             path = API;
             sourceTree = "<group>";
@@ -225,6 +229,7 @@
                 C10000000000000000000004 /* SidecarManager.swift in Sources */,
                 C10000000000000000000005 /* SidecarState.swift in Sources */,
                 C10000000000000000000006 /* DashboardView.swift in Sources */,
+                C10000000000000000000010 /* Money.swift in Sources */,
                 C10000000000000000000007 /* DashboardModel.swift in Sources */,
                 C10000000000000000000008 /* ChartModels.swift in Sources */,
                 C10000000000000000000009 /* MenuBarExtraView.swift in Sources */,

@@ -28,11 +28,11 @@ actor APIClient: APIClientProtocol {
     }
     
     public func fetchUsageSummary(from: String, to: String, timezone: String) async throws -> UsageSummaryResponse {
-        var components = URLComponents(url: baseURL.appendingPathComponent("/api/usage/summary"), resolvingAgainstBaseURL: true)
+        var components = URLComponents(url: baseURL.appendingPathComponent("/api/v1/usage/summary"), resolvingAgainstBaseURL: true)
         components?.queryItems = [
             URLQueryItem(name: "from", value: from),
             URLQueryItem(name: "to", value: to),
-            URLQueryItem(name: "tz", value: timezone)
+            URLQueryItem(name: "timezone", value: timezone)
         ]
         
         guard let url = components?.url else {

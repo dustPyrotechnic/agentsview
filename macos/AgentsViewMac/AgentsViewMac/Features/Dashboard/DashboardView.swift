@@ -7,15 +7,17 @@ struct DashboardView: View {
     var body: some View {
         Group {
             switch model.state {
-            case .idle, .loading: ProgressView("Loading usage…").controlSize(.small)
-            case .failed: ContentUnavailableView("Usage unavailable", systemImage: "exclamationmark.triangle", description: Text("Try refreshing the usage data."))
+            case .loading: ProgressView("Loading usage…").controlSize(.small)
+            case .error(let message): ContentUnavailableView("Usage unavailable", systemImage: "exclamationmark.triangle", description: Text(message))
             case .empty: ContentUnavailableView("No usage yet", systemImage: "chart.bar.xaxis", description: Text("Usage will appear after your first session."))
-            case .loaded(let summary): dashboard(summary)
+            case .success:
+                if let summary = model.summary { dashboard(summary) }
+                else { ContentUnavailableView("No usage yet", systemImage: "chart.bar.xaxis") }
             }
         }
         .frame(minWidth: 700, minHeight: 500)
         .padding(24)
-        .task { if case .idle = model.state { await model.load() } }
+        .task { await model.refresh() }
     }
 
     @ViewBuilder private func dashboard(_ summary: UsageSummaryResponse) -> some View {
@@ -27,29 +29,25 @@ struct DashboardView: View {
                         Text("\(summary.from) – \(summary.to)").foregroundStyle(.secondary)
                     }
                     Spacer()
-                    Picker("Range", selection: Binding(get: { model.range }, set: { value in Task { await model.changeRange(value) } })) {
-                        ForEach(UsageRange.allCases, id: \.self) { Text($0.rawValue.capitalized).tag($0) }
-                    }.pickerStyle(.segmented).frame(width: 220)
                     Button { Task { await model.refresh() } } label: { Label("Refresh", systemImage: "arrow.clockwise") }.help("Refresh usage")
                 }
                 summaryCards(summary)
                 HStack(alignment: .top, spacing: 16) {
                     chartCard(summary)
-                    rankingCard(title: "Top models", icon: "cpu", rows: summary.modelTotals.map { ($0.model, $0.cost.microdollars, $0.inputTokens + $0.outputTokens) })
+                    rankingCard(title: "Top models", icon: "cpu", rows: summary.modelTotals.map { ($0.modelName, $0.cost.microdollars, $0.inputTokens + $0.outputTokens) })
                 }
                 rankingCard(title: "Top projects", icon: "folder", rows: summary.projectTotals.map { ($0.project, $0.cost.microdollars, $0.inputTokens + $0.outputTokens) })
                 if summary.unsupportedUsage != nil { Label("Some usage is unpriced", systemImage: "questionmark.circle").foregroundStyle(.orange) }
             }
         }
     }
-
-    private func summaryCards(_ s: UsageSummaryResponse) -> some View {
-        let tokens = s.totals.inputTokens + s.totals.outputTokens + s.totals.cacheCreationTokens + s.totals.cacheReadTokens
+    private func summaryCards(_ summary: UsageSummaryResponse) -> some View {
+        let tokens = summary.totals.inputTokens + summary.totals.outputTokens + summary.totals.cacheCreationTokens + summary.totals.cacheReadTokens
         return HStack(spacing: 12) {
             metric("Tokens", value: tokens.formatted())
-            metric("Actual cost", value: formatMicrodollars(s.totals.totalCost.microdollars))
-            metric("Sessions", value: s.sessionCounts.total.formatted())
-            if let comparison = s.comparison { metric("vs prior", value: formatComparison(comparison.deltaPct)) }
+            metric("Actual cost", value: formatMicrodollars(summary.totals.totalCost.microdollars))
+            metric("Sessions", value: summary.sessionCounts.totalSessions.formatted())
+            if let comparison = summary.comparison { metric("vs prior", value: formatComparison(comparison.deltaPct)) }
         }
     }
 

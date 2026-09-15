@@ -1,5 +1,33 @@
 import Foundation
 
+struct UsageChartSeries: Equatable, Sendable {
+    let points: [UsageChartPoint]
+    let domain: ClosedRange<Double>
+
+    init(daily: [DailyUsageEntry]) {
+        points = daily.sorted { $0.date < $1.date }.map {
+            UsageChartPoint(date: $0.date, value: $0.totalCost.microdollars)
+        }
+        let maximum = points.map { Double($0.value) }.max() ?? 0
+        domain = 0...max(1, maximum)
+    }
+}
+
+struct UsageChartPoint: Equatable, Sendable {
+    let date: String
+    let value: Int64
+}
+
+func formatMicrodollars(_ value: Int64) -> String {
+    let sign = value < 0 ? "-" : ""
+    let absolute = value.magnitude
+    return "\(sign)$\(absolute / 1_000_000).\(String(format: "%06llu", absolute % 1_000_000))"
+}
+
+func formatComparison(_ delta: Double) -> String {
+    String(format: "%+.1f%%", delta * 100)
+}
+
 /// A single data point in a usage chart
 struct ChartPoint: Identifiable, Sendable {
     let id: String

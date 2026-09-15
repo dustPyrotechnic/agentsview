@@ -7,7 +7,7 @@ struct UsageMenuBarView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            if case .loaded(let summary) = model.state {
+            if case .success = model.state, let summary = model.summary {
                 let total = summary.totals.inputTokens + summary.totals.outputTokens + summary.totals.cacheCreationTokens + summary.totals.cacheReadTokens
                 Text("\(total.formatted()) tokens").font(.headline)
                 LabeledContent("Actual cost", value: formatMicrodollars(summary.totals.totalCost.microdollars))

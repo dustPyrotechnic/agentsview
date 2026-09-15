@@ -5,7 +5,7 @@ protocol ProcessManaging: AnyObject {
     func terminate(force: Bool)
     var isRunning: Bool { get }
 }
-protocol HealthProbing: AnyObject { func isHealthy(at url: URL) async -> Bool }
+protocol HealthProbing: AnyObject, Sendable { func isHealthy(at url: URL) async -> Bool }
 
 private final class SystemProcessManager: ProcessManaging {
     private let process = Process()
