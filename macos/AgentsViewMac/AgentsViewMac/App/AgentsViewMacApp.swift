@@ -1,29 +1,19 @@
 import SwiftUI
+import AppKit
 
 @main
 struct AgentsViewMacApp: App {
-    var body: some Scene {
-        WindowGroup {
-            DashboardPlaceholderView()
-        }
+    @State private var dashboardModel = DashboardModel { _, _ in
+        throw NSError(domain: "AgentsView", code: 1, userInfo: [NSLocalizedDescriptionKey: "Usage service unavailable"])
     }
-}
+    @Environment(\.openWindow) private var openWindow
 
-struct DashboardPlaceholderView: View {
-    var body: some View {
-        VStack(spacing: 16) {
-            Image(systemName: "chart.bar.doc.horizontal")
-                .font(.system(size: 64))
-                .foregroundStyle(.secondary)
-            
-            Text("AgentsView Dashboard")
-                .font(.title)
-            
-            Text("Native macOS client loading...")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
+    var body: some Scene {
+        WindowGroup(id: "dashboard") {
+            DashboardView(model: dashboardModel)
         }
-        .frame(minWidth: 800, minHeight: 600)
-        .padding()
+        MenuBarExtra("AgentsView", systemImage: "chart.bar.xaxis") {
+            UsageMenuBarView(model: dashboardModel, openWindow: { openWindow(id: "dashboard") }, quit: { NSApp.terminate(nil) })
+        }
     }
 }
