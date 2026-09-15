@@ -10,7 +10,7 @@ protocol APIClientProtocol: Sendable {
     ///   - timezone: IANA timezone identifier (e.g., "America/New_York")
     /// - Returns: Usage summary response
     /// - Throws: APIError if the request fails
-    public func fetchUsageSummary(from: String, to: String, timezone: String) async throws -> UsageSummaryResponse
+    func fetchUsageSummary(from: String, to: String, timezone: String) async throws -> UsageSummaryResponse
 }
 
 /// Production API client that communicates with the Go sidecar
