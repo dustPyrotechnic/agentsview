@@ -1,0 +1,457 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+        AA0000010000000000000001 /* AgentsViewMacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000020000000000000001 /* AgentsViewMacApp.swift */; };
+		C10000000000000000000001 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000001 /* APIClient.swift */; };
+		C10000000000000000000002 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000002 /* APIError.swift */; };
+		C10000000000000000000003 /* UsageModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000003 /* UsageModels.swift */; };
+		C10000000000000000000004 /* SidecarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000004 /* SidecarManager.swift */; };
+		C10000000000000000000005 /* SidecarState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000005 /* SidecarState.swift */; };
+		C10000000000000000000006 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000006 /* DashboardView.swift */; };
+		C10000000000000000000007 /* DashboardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000007 /* DashboardModel.swift */; };
+		C10000000000000000000008 /* ChartModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000008 /* ChartModels.swift */; };
+		C10000000000000000000009 /* MenuBarExtraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000009 /* MenuBarExtraView.swift */; };
+        C10000000000000000000010 /* Money.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000010 /* Money.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXShellScriptBuildPhase section */
+        AA0000170000000000000001 /* Build agentsview sidecar */ = {
+            isa = PBXShellScriptBuildPhase;
+            buildActionMask = 2147483647;
+            files = (
+            );
+            inputPaths = (
+            );
+            outputPaths = (
+                "$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/agentsview",
+            );
+            runOnlyForDeploymentPostprocessing = 0;
+            shellPath = /bin/bash;
+            shellScript = "set -euo pipefail\nif [ \"${AGENTSVIEW_SKIP_SIDECAR_BUILD:-0}\" = \"1\" ]; then exit 0; fi\nrepo_root=\"${SRCROOT}/../..\"\nif [ ! -d \"${repo_root}/internal/web/dist\" ]; then\n  (cd \"${repo_root}/frontend\" && npm ci && npm run build)\n  rm -rf \"${repo_root}/internal/web/dist\"\n  cp -R \"${repo_root}/frontend/dist\" \"${repo_root}/internal/web/dist\"\nfi\nif [ ! -f \"${repo_root}/internal/pricing/snapshot/litellm_snapshot.json.gz\" ]; then\n  (cd \"${repo_root}\" && go run ./internal/pricing/cmd/litellm-snapshot -restore)\nfi\nmkdir -p \"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\n(cd \"${repo_root}\" && CGO_ENABLED=1 go build -tags fts5 -trimpath -o \"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/agentsview\" ./cmd/agentsview)\nchmod +x \"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/agentsview\"\n";
+        };
+/* End PBXShellScriptBuildPhase section */
+/* Begin PBXFileReference section */
+		B10000000000000000000001 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		B10000000000000000000002 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
+		B10000000000000000000003 /* UsageModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageModels.swift; sourceTree = "<group>"; };
+		B10000000000000000000004 /* SidecarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidecarManager.swift; sourceTree = "<group>"; };
+		B10000000000000000000005 /* SidecarState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidecarState.swift; sourceTree = "<group>"; };
+		B10000000000000000000006 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		B10000000000000000000007 /* DashboardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardModel.swift; sourceTree = "<group>"; };
+		B10000000000000000000008 /* ChartModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartModels.swift; sourceTree = "<group>"; };
+		B10000000000000000000009 /* MenuBarExtraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarExtraView.swift; sourceTree = "<group>"; };
+        B10000000000000000000010 /* Money.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Money.swift; sourceTree = "<group>"; };
+		AA0000020000000000000001 /* AgentsViewMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentsViewMacApp.swift; sourceTree = "<group>"; };
+		AA0000030000000000000001 /* AgentsViewMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AgentsViewMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA0000040000000000000001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AA0000050000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		AA0000060000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				AA0000070000000000000001 /* AgentsViewMac */,
+				AA0000080000000000000001 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		AA0000070000000000000001 /* AgentsViewMac */ = {
+			isa = PBXGroup;
+			children = (
+				AA0000090000000000000001 /* App */,
+				AA000000A000000000000001 /* Core */,
+				AA000000B000000000000001 /* Features */,
+				AA000000C000000000000001 /* Resources */,
+			);
+			path = AgentsViewMac;
+			sourceTree = "<group>";
+		};
+		AA0000080000000000000001 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AA0000030000000000000001 /* AgentsViewMac.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AA0000090000000000000001 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				AA0000020000000000000001 /* AgentsViewMacApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+        AA000000A000000000000001 /* Core */ = {
+            isa = PBXGroup;
+            children = (
+                D10000000000000000000001 /* API */,
+                D10000000000000000000002 /* Sidecar */,
+            );
+            path = Core;
+            sourceTree = "<group>";
+        };
+        D10000000000000000000001 /* API */ = {
+            isa = PBXGroup;
+            children = (
+                B10000000000000000000001 /* APIClient.swift */,
+                B10000000000000000000002 /* APIError.swift */,
+                B10000000000000000000003 /* UsageModels.swift */,
+                B10000000000000000000010 /* Money.swift */,
+            );
+            path = API;
+            sourceTree = "<group>";
+        };
+        D10000000000000000000002 /* Sidecar */ = {
+            isa = PBXGroup;
+            children = (
+                B10000000000000000000004 /* SidecarManager.swift */,
+                B10000000000000000000005 /* SidecarState.swift */,
+            );
+            path = Sidecar;
+            sourceTree = "<group>";
+        };
+        AA000000B000000000000001 /* Features */ = {
+            isa = PBXGroup;
+            children = (
+                D10000000000000000000003 /* Dashboard */,
+                D10000000000000000000004 /* Usage */,
+                D10000000000000000000005 /* MenuBar */,
+            );
+            path = Features;
+            sourceTree = "<group>";
+        };
+        D10000000000000000000003 /* Dashboard */ = {
+            isa = PBXGroup;
+            children = (
+                B10000000000000000000006 /* DashboardView.swift */,
+                B10000000000000000000007 /* DashboardModel.swift */,
+            );
+            path = Dashboard;
+            sourceTree = "<group>";
+        };
+        D10000000000000000000004 /* Usage */ = {
+            isa = PBXGroup;
+            children = (
+                B10000000000000000000008 /* ChartModels.swift */,
+            );
+            path = Usage;
+            sourceTree = "<group>";
+        };
+        D10000000000000000000005 /* MenuBar */ = {
+            isa = PBXGroup;
+            children = (
+                B10000000000000000000009 /* MenuBarExtraView.swift */,
+            );
+            path = MenuBar;
+            sourceTree = "<group>";
+        };
+		AA000000C000000000000001 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				AA0000040000000000000001 /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AA000000D000000000000001 /* AgentsViewMac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AA000000E000000000000001 /* Build configuration list for PBXNativeTarget "AgentsViewMac" */;
+            buildPhases = (
+                AA000000F000000000000001 /* Sources */,
+                AA0000050000000000000001 /* Frameworks */,
+                AA0000170000000000000001 /* Build agentsview sidecar */,
+                AA0000100000000000000001 /* Resources */,
+            );
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AgentsViewMac;
+			productName = AgentsViewMac;
+			productReference = AA0000030000000000000001 /* AgentsViewMac.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AA0000110000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					AA000000D000000000000001 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = AA0000120000000000000001 /* Build configuration list for PBXProject "AgentsViewMac" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = AA0000060000000000000001;
+			productRefGroup = AA0000080000000000000001 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AA000000D000000000000001 /* AgentsViewMac */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AA0000100000000000000001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AA000000F000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+            files = (
+                AA0000010000000000000001 /* AgentsViewMacApp.swift in Sources */,
+                C10000000000000000000001 /* APIClient.swift in Sources */,
+                C10000000000000000000002 /* APIError.swift in Sources */,
+                C10000000000000000000003 /* UsageModels.swift in Sources */,
+                C10000000000000000000004 /* SidecarManager.swift in Sources */,
+                C10000000000000000000005 /* SidecarState.swift in Sources */,
+                C10000000000000000000006 /* DashboardView.swift in Sources */,
+                C10000000000000000000010 /* Money.swift in Sources */,
+                C10000000000000000000007 /* DashboardModel.swift in Sources */,
+                C10000000000000000000008 /* ChartModels.swift in Sources */,
+                C10000000000000000000009 /* MenuBarExtraView.swift in Sources */,
+            );
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		AA0000130000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+                MACOSX_DEPLOYMENT_TARGET = 14.0;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+                ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+                MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		AA0000140000000000000001 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+                MACOSX_DEPLOYMENT_TARGET = 14.0;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+                ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+                MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		AA0000150000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = AgentsViewMac/Resources/AgentsViewMac.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AgentsViewMac/Resources/Info.plist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(PRODUCT_BUNDLE_IDENTIFIER_BASE)";
+				PRODUCT_BUNDLE_IDENTIFIER_BASE = io.agentsview.mac;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		AA0000160000000000000001 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = AgentsViewMac/Resources/AgentsViewMac.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AgentsViewMac/Resources/Info.plist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(PRODUCT_BUNDLE_IDENTIFIER_BASE)";
+				PRODUCT_BUNDLE_IDENTIFIER_BASE = io.agentsview.mac;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AA0000120000000000000001 /* Build configuration list for PBXProject "AgentsViewMac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA0000130000000000000001 /* Debug */,
+				AA0000140000000000000001 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AA000000E000000000000001 /* Build configuration list for PBXNativeTarget "AgentsViewMac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA0000150000000000000001 /* Debug */,
+				AA0000160000000000000001 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = AA0000110000000000000001 /* Project object */;
+}
